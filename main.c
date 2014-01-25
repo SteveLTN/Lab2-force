@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
-#include <omp.h> 
+#include <omp.h>
 
 #define mm 15
 #define npart 4*mm*mm*mm
@@ -36,7 +36,7 @@
   double
   velavg(int,double[],double,double);
 
-  double 
+  double
   secnds(void);
 
 /*
@@ -111,14 +111,15 @@ int main(){
            "   pres      vel      rp\n  -----  ----------  ----------"
            "  ----------  --------  --------  --------  ----\n");
 
-     start = secnds(); 
+     start = secnds();
 
-
+    #pragma omp parallel num_threads(2) private(move)
     for (move=1; move<=movemx; move++) {
 
     /*
      *  Move the particles and partially update velocities
      */
+     #pragma omp single
       domove(3*npart, x, vh, f, side);
 
     /*
@@ -126,42 +127,47 @@ int main(){
      *  and potential energy.
      */
       forces(npart, x, f, side, rcoff);
-
     /*
      *  Scale forces, complete update of velocities and compute k.e.
      */
+          #pragma omp single
       ekin=mkekin(npart, f, vh, hsq2, hsq);
 
     /*
      *  Average the velocity and temperature scale if desired
      */
+          #pragma omp single
+     {
       vel=velavg(npart, vh, vaver, h);
       if (move<istop && fmod(move, irep)==0) {
         sc=sqrt(tref/(tscale*ekin));
         dscal(3*npart, sc, vh, 1);
         ekin=tref/tscale;
       }
+    }
 
     /*
      *  Sum to get full potential energy and virial
      */
+          #pragma omp single
+     {
       if (fmod(move, iprint)==0)
         prnout(move, ekin, epot, tscale, vir, vel, count, npart, den);
-      
     }
+  }
 
-    time = secnds() - start;  
+    time = secnds() - start;
 
-    printf("Time =  %f\n",(float) time);  
+    printf("Time =  %f\n",(float) time);
 
   }
 
-time_t starttime = 0; 
+time_t starttime = 0;
 
 double secnds()
 {
 
-  return omp_get_wtime(); 
+  return omp_get_wtime();
 
 }
 

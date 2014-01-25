@@ -6,13 +6,15 @@
 
   void
   forces(int npart, double x[], double f[], double side, double rcoff){
-
     int   i, j;
+    #pragma omp single
+    {
     vir    = 0.0;
     epot   = 0.0;
+    }
 
 
-    #pragma omp parallel for num_threads(48) shared(npart, x, f, side, rcoff) private(i, j) reduction(+:vir, epot) schedule(guided)
+    #pragma omp parallel for private(i, j) reduction(+:vir, epot) schedule(guided)
     for (i=0; i<npart*3; i+=3) {
 
       // zero force components on particle i
