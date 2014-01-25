@@ -4,7 +4,7 @@
 # copy to make.def
 CC         = icc
 CPP         = icpc
-OPTFLAGS   = -openmp -O
+OPTFLAGS   = -openmp -O0 -g
 
 
 CLINKER     = $(CC)
@@ -30,7 +30,7 @@ MDOBJS=    main.$(OBJ) \
 	mxwell.$(OBJ) \
 	prnout.$(OBJ) \
       random.$(OBJ) \
-	velavg.$(OBJ) 
+	velavg.$(OBJ)
 
 #
 # Compile
