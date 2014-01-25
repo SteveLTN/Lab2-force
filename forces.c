@@ -16,9 +16,9 @@ void forces(int npart, double x[], double f[], double side, double rcoff) {
     double fzi = 0.0;
 
     double f_private[npart*3-(i+3)];
-    int ape;
-    for(ape=0; ape < npart*3-(i+3); ape++)
-      f_private[ape] = 0;
+    int k;
+    for(k=0; k < npart*3-(i+3); k++)
+      f_private[k] = 0;
 
     for (j=i+3; j<npart*3; j+=3) {
       double xx = x[i]-x[j];
@@ -54,9 +54,10 @@ void forces(int npart, double x[], double f[], double side, double rcoff) {
       }
     }
 
-    for(ape=0; ape < npart*3-(i+3); ape++)
-      #pragma omp atomic
-      f[ape+(i+3)] -= f_private[ape];
+    for(k=0; k < npart*3-(i+3); k++)
+      if (f_private[k] != 0)
+        #pragma omp atomic
+        f[k+(i+3)] -= f_private[k];
 
     #pragma omp atomic
     f[i]     += fxi;
