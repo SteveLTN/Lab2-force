@@ -1,0 +1,30 @@
+﻿Build started 11/13/2010 8:22:46 AM.
+     1>Project "C:\Users\tgmattso\Documents\Talks-training\Training-2010\OMP-SC10\OMP\MolDyn\MolDynSeq\MolDynSeq\MolDynSeq.vcxproj" on node 2 (build target(s)).
+     1>PrepareForBuild:
+         Creating directory "C:\Users\tgmattso\Documents\Talks-training\Training-2010\OMP-SC10\OMP\MolDyn\MolDynSeq\Debug\".
+       InitializeBuildStatus:
+         Creating "Debug\MolDynSeq.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /openmp /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TC /analyze- /errorReport:prompt ..\..\dfill.c ..\..\domove.c ..\..\dscal.c ..\..\fcc.c ..\..\forces.c ..\..\main.c ..\..\mkekin.c ..\..\mxwell.c ..\..\prnout.c ..\..\random.c ..\..\velavg.c
+         velavg.c
+         random.c
+     1>c:\users\tgmattso\documents\talks-training\training-2010\omp-sc10\omp\moldyn\random.c(33): warning C4244: 'initializing' : conversion from 'double' to 'long', possible loss of data
+         prnout.c
+         mxwell.c
+         mkekin.c
+         main.c
+         forces.c
+     1>c:\users\tgmattso\documents\talks-training\training-2010\omp-sc10\omp\moldyn\forces.c(40): error C2143: syntax error : missing ';' before 'type'
+     1>c:\users\tgmattso\documents\talks-training\training-2010\omp-sc10\omp\moldyn\forces.c(45): error C2065: 'rd' : undeclared identifier
+     1>c:\users\tgmattso\documents\talks-training\training-2010\omp-sc10\omp\moldyn\forces.c(47): error C2065: 'rd' : undeclared identifier
+     1>c:\users\tgmattso\documents\talks-training\training-2010\omp-sc10\omp\moldyn\forces.c(54): error C2065: 'rd' : undeclared identifier
+         fcc.c
+         dscal.c
+         domove.c
+         dfill.c
+         Generating Code...
+     1>Done Building Project "C:\Users\tgmattso\Documents\Talks-training\Training-2010\OMP-SC10\OMP\MolDyn\MolDynSeq\MolDynSeq\MolDynSeq.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:01.66
