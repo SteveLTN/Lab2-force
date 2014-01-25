@@ -12,10 +12,8 @@
     epot   = 0.0;
 
 
-    #pragma omp parallel for num_threads(4) shared(npart, x, f, side, rcoff, vir, epot) private(i, j)// reduction(+:vir, epot)
+    #pragma omp parallel for num_threads(48) shared(npart, x, f, side, rcoff) private(i, j) reduction(+:vir, epot) schedule(guided)
     for (i=0; i<npart*3; i+=3) {
-
-      // double vir_local = 0, epot_local = 0;
 
       // zero force components on particle i
       // double f_local[npart * 3];
@@ -28,9 +26,6 @@
       // loop over all particles with index > i
 
       for (j=i+3; j<npart*3; j+=3) {
-
-  // compute distance between particles i and j allowing for wraparound
-
         double xx = x[i]-x[j];
         double yy = x[i+1]-x[j+1];
         double zz = x[i+2]-x[j+2];
@@ -57,11 +52,11 @@
 
           // epot_local    += rrd3*(rrd3-1.0);
           // vir_local     -= rd*r148;
-          #pragma omp critical
-          {
+          // #pragma omp critical
+          // {
             epot    += rrd3*(rrd3-1.0);
-            vir     -= rd*r148;
-          }
+            vir     += -rd*r148;
+          // }
 
           fxi     += xx*r148;
           fyi     += yy*r148;
@@ -71,12 +66,12 @@
           // f_local[j]    -= xx*r148;
           // f_local[j+1]  -= yy*r148;
           // f_local[j+2]  -= zz*r148;
-          #pragma omp critical
-          {
-            f[j]    -= xx*r148;
-            f[j+1]  -= yy*r148;
-            f[j+2]  -= zz*r148;
-          }
+          #pragma omp atomic
+          f[j]    -= xx*r148;
+          #pragma omp atomic
+          f[j+1]  -= yy*r148;
+          #pragma omp atomic
+          f[j+2]  -= zz*r148;
 
         }
 
@@ -87,16 +82,14 @@
       // f_local[i]     += fxi;
       // f_local[i+1]   += fyi;
       // f_local[i+2]   += fzi;
-      #pragma omp critical
-      {
-        f[i]     += fxi;
-        f[i+1]   += fyi;
-        f[i+2]   += fzi;
-      }
+      #pragma omp atomic
+      f[i]     += fxi;
+      #pragma omp atomic
+      f[i+1]   += fyi;
+      #pragma omp atomic
+      f[i+2]   += fzi;
 
 
-      // vir += vir_local;
-      // epot += epot_local;
       // for(i=0; i< npart * 3; i++)
       //   #pragma omp atomic
       //   f[i] += f_local[i];
