@@ -2,6 +2,7 @@
 #include <math.h>
 #include <time.h>
 #include <omp.h>
+#include <stdlib.h>
 
 #define mm 15
 #define npart 4*mm*mm*mm
@@ -46,7 +47,8 @@
   double epot;
   double vir;
   double count;
-  double * f_accumulation[];
+  double **f_accumulation;
+
 
 /*
  *  Main program : Molecular Dynamics simulation.
@@ -59,6 +61,14 @@ int main(){
     double sc;
     double start, time;
 
+    // int num_threads = 2;
+
+    // f_accumulation= (double**)malloc(num_threads * sizeof(double *));
+    // int i;
+    // for (i = 0; i < num_threads; i++) {
+    //   f_accumulation[i] = (double*)malloc((npart * 3) * sizeof(double));
+    //   memset(f_accumulation[i], 0.0f, (npart * 3));
+    // }
 
   /*
    *  Parameter definitions
@@ -105,6 +115,7 @@ int main(){
    */
     mxwell(vh, 3*npart, h, tref);
     dfill(3*npart, 0.0, f, 1);
+
   /*
    *  Start of md
    */
@@ -114,46 +125,66 @@ int main(){
 
      start = secnds();
 
-    #pragma omp parallel private(move) num_threads(16)
-    for (move=1; move<=movemx; move++) {
-
-    /*
-     *  Move the particles and partially update velocities
-     */
-      #pragma omp single
-      domove(3*npart, x, vh, f, side);
-
-    /*
-     *  Compute forces in the new positions and accumulate the virial
-     *  and potential energy.
-     */
-      forces(npart, x, f, side, rcoff);
-
+    #pragma omp parallel private(move) num_threads(2)
+     {
       #pragma omp single
       {
-        /*
-         *  Scale forces, complete update of velocities and compute k.e.
-         */
-        ekin=mkekin(npart, f, vh, hsq2, hsq);
+        int num_threads = omp_get_num_threads();
 
-        /*
-         *  Average the velocity and temperature scale if desired
-         */
-        vel=velavg(npart, vh, vaver, h);
-        if (move<istop && fmod(move, irep)==0) {
-          sc=sqrt(tref/(tscale*ekin));
-          dscal(3*npart, sc, vh, 1);
-          ekin=tref/tscale;
+        f_accumulation= (double**)malloc(num_threads * sizeof(double *));
+        int i;
+        for (i = 0; i < num_threads; i++) {
+          f_accumulation[i] = (double*)malloc((npart * 3) * sizeof(double));
+          //memset(f_accumulation[i], 0.0f, (npart * 3));
+        }
+      }
+      for (move=1; move<=movemx; move++) {
+
+      /*
+       *  Move the particles and partially update velocities
+       */
+        #pragma omp single 
+        {
+          domove(3*npart, x, vh, f, side);
+
+          int g;
+          for (g = 0; g < omp_get_num_threads(); g++) {
+            memset(f_accumulation[g], 0.0f, (npart * 3));
+          }
         }
 
-        /*
-         *  Sum to get full potential energy and virial
-         */
+      /*
+       *  Compute forces in the new positions and accumulate the virial
+       *  and potential energy.
+       */
+        forces(npart, x, f, side, rcoff);
 
-        if (fmod(move, iprint)==0)
-          prnout(move, ekin, epot, tscale, vir, vel, count, npart, den);
+        #pragma omp single
+        {
+          /*
+           *  Scale forces, complete update of velocities and compute k.e.
+           */
+          ekin=mkekin(npart, f, vh, hsq2, hsq);
+
+          /*
+           *  Average the velocity and temperature scale if desired
+           */
+          vel=velavg(npart, vh, vaver, h);
+          if (move<istop && fmod(move, irep)==0) {
+            sc=sqrt(tref/(tscale*ekin));
+            dscal(3*npart, sc, vh, 1);
+            ekin=tref/tscale;
+          }
+
+          /*
+           *  Sum to get full potential energy and virial
+           */
+
+          if (fmod(move, iprint)==0)
+            prnout(move, ekin, epot, tscale, vir, vel, count, npart, den);
+        }
       }
-  }
+    }
 
     time = secnds() - start;
 
@@ -169,4 +200,3 @@ double secnds()
   return omp_get_wtime();
 
 }
-
