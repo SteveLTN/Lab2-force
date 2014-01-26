@@ -1,26 +1,37 @@
 extern double epot, vir;
+extern double ** f_accumulation;
 
 void forces(int npart, double x[], double f[], double side, double rcoff) {
   int   i, j;
+  printf("num_threads: %d\n", omp_get_num_threads());
   #pragma omp single
   {
     vir    = 0.0;
     epot   = 0.0;
+    f_accumulation = (double **) malloc(omp_get_num_threads() * sizeof(double *));
   }
 
   #pragma omp for private(i, j) reduction(+:vir, epot) schedule(dynamic, 10)
   for (i=0; i<npart*3; i+=3) {
 
+    int thread_num = omp_get_thread_num();
+    int num_threads = omp_get_num_threads();
+    int length = npart * 3;
+
+    printf("Thread num: %d\n", thread_num);
+    printf("f_accumulation address %d\n", f_accumulation);
+    f_accumulation[thread_num] = (double *) malloc(length * sizeof(double));
+    for(j=0; j<length; j++){
+      printf("j = %d", j);
+      f_accumulation[thread_num][j] = 0;
+    }
+    double * f_local = f_accumulation[thread_num];
+
     double fxi = 0.0;
     double fyi = 0.0;
     double fzi = 0.0;
 
-    double f_private[npart*3-(i+3)];
-    int k;
-    for(k=0; k < npart*3-(i+3); k++)
-      f_private[k] = 0;
-
-    for (j=i+3; j<npart*3; j+=3) {
+    for (j=i+3; j<length; j+=3) {
       double xx = x[i]-x[j];
       double yy = x[i+1]-x[j+1];
       double zz = x[i+2]-x[j+2];
@@ -48,22 +59,19 @@ void forces(int npart, double x[], double f[], double side, double rcoff) {
         fyi     += yy*r148;
         fzi     += zz*r148;
 
-        f_private[j-(i+3)] += xx*r148;
-        f_private[j+1-(i+3)] += yy*r148;
-        f_private[j+2-(i+3)] += zz*r148;
+        f_local[j] += xx * r148;
+        f_local[j + 1] += yy * r148;
+        f_local[j + 2] += zz * r148;
       }
     }
 
-    for(k=0; k < npart*3-(i+3); k++)
-      if (f_private[k] != 0)
-        #pragma omp atomic
-        f[k+(i+3)] -= f_private[k];
-
-    #pragma omp atomic
-    f[i]     += fxi;
-    #pragma omp atomic
-    f[i+1]   += fyi;
-    #pragma omp atomic
-    f[i+2]   += fzi;
+    f_local[i]     += fxi;
+    f_local[i + 1]   += fyi;
+    f_local[i + 2]   += fzi;
   } // end of for loop
+
+
+  for(i = 0; i < npart * 3; i++)
+    for(j = 0; j < omp_get_num_threads(); j++)
+      f[i] += f_accumulation[j][i];
 }

@@ -46,6 +46,7 @@
   double epot;
   double vir;
   double count;
+  double * f_accumulation[];
 
 /*
  *  Main program : Molecular Dynamics simulation.
@@ -113,7 +114,7 @@ int main(){
 
      start = secnds();
 
-    #pragma omp parallel private(move)
+    #pragma omp parallel private(move) num_threads(16)
     for (move=1; move<=movemx; move++) {
 
     /*
