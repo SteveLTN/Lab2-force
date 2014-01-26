@@ -113,7 +113,7 @@ int main(){
 
      start = secnds();
 
-    #pragma omp parallel private(move)
+    #pragma omp parallel private(move) num_threads(48)
     for (move=1; move<=movemx; move++) {
 
     /*
