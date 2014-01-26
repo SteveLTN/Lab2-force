@@ -8,7 +8,6 @@ forces(int npart, double x[], double f[], double side, double rcoff){
     vir    = 0.0;
     epot   = 0.0;
   }
-  omp_set_num_threads(48);
 
   #pragma omp for private(i, j) reduction(+:vir, epot) schedule(guided)
   for (i=0; i<npart*3; i+=3) {
