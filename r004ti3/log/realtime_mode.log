@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feedback>
+ <message severity="verbose">Analysis started...</message>
+ <nop/>
+ <message severity="verbose">Result file: /local/pcs_ua/pcs13_19/Labs/Lab2/MolDyn/r004ti3/r004ti3.inspxe </message>
+ <nop/>
+ <message severity="verbose">Found target process /local/pcs_ua/pcs13_19/Labs/Lab2/MolDyn/md (PID = 4407). Analysis started... </message>
+ <nop/>
+ <message severity="verbose">Loaded module: /local/pcs_ua/pcs13_19/Labs/Lab2/MolDyn/md. </message>
+ <nop/>
+ <message severity="verbose">Loaded module: /lib64/ld-linux-x86-64.so.2. </message>
+ <nop/>
+ <message severity="verbose">Loaded module: /lib64/libm.so.6. </message>
+ <nop/>
+ <message severity="verbose">Loaded module: /opt/intel/composer_xe_2013_sp1.1.106/compiler/lib/intel64/libiomp5.so. </message>
+ <nop/>
+ <message severity="verbose">Loaded module: /lib64/libgcc_s.so.1. </message>
+ <nop/>
+ <message severity="verbose">Loaded module: /lib64/libpthread.so.0. </message>
+ <nop/>
+ <message severity="verbose">Loaded module: /lib64/libc.so.6. </message>
+ <nop/>
+ <message severity="verbose">Loaded module: /lib64/libdl.so.2. </message>
+ <nop/>
+ <message severity="verbose">Loaded module: /local/opt/intel/inspector_xe_2013/bin64/../lib64/runtime/libittnotify.so. </message>
+ <nop/>
+ <message severity="warning">One or more threads in the application accessed the stack of another thread. This may indicate one or more bugs in your application. Setting the Inspector to detect data races on stack accesses and running another analysis may help you locate these and other bugs.</message>
+ <nop/>
+ <message severity="verbose">Unloaded module: /local/pcs_ua/pcs13_19/Labs/Lab2/MolDyn/md. </message>
+ <nop/>
+ <message severity="verbose">Unloaded module: /lib64/ld-linux-x86-64.so.2. </message>
+ <nop/>
+ <message severity="verbose">Unloaded module: /lib64/libm.so.6. </message>
+ <nop/>
+ <message severity="verbose">Unloaded module: /opt/intel/composer_xe_2013_sp1.1.106/compiler/lib/intel64/libiomp5.so. </message>
+ <nop/>
+ <message severity="verbose">Unloaded module: /lib64/libgcc_s.so.1. </message>
+ <nop/>
+ <message severity="verbose">Unloaded module: /lib64/libpthread.so.0. </message>
+ <nop/>
+ <message severity="verbose">Unloaded module: /lib64/libc.so.6. </message>
+ <nop/>
+ <message severity="verbose">Unloaded module: /lib64/libdl.so.2. </message>
+ <nop/>
+ <message severity="verbose">Unloaded module: /local/opt/intel/inspector_xe_2013/bin64/../lib64/runtime/libittnotify.so. </message>
+ <nop/>
+ <message severity="verbose">Process /local/pcs_ua/pcs13_19/Labs/Lab2/MolDyn/md (PID = 4407) has terminated. </message>
+ <nop/>
+ <message severity="verbose">Application exit code: 0 </message>
+ <nop/>
+ <message severity="verbose">Result file: /local/pcs_ua/pcs13_19/Labs/Lab2/MolDyn/r004ti3/r004ti3.inspxe </message>
+ <nop/>
+ <message severity="verbose">Analysis completed</message>
+ <nop/>
+ <message severity="info">  </message>
+ <nop/>
+ <message severity="info">1 new problem(s) found </message>
+ <nop/>
+ <message severity="info">    1 Data race problem(s) detected </message>
+ <nop/>
+</feedback>

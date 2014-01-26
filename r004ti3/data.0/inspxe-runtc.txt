@@ -1,0 +1,29 @@
+
+=== Start: [2014/01/26 17:53:35] === 
+Analysis started...
+Result file: /local/pcs_ua/pcs13_19/Labs/Lab2/MolDyn/r004ti3/r004ti3.inspxe 
+Found target process /local/pcs_ua/pcs13_19/Labs/Lab2/MolDyn/md (PID = 4407). Analysis started... 
+Loaded module: /local/pcs_ua/pcs13_19/Labs/Lab2/MolDyn/md. 
+Loaded module: /lib64/ld-linux-x86-64.so.2. 
+Loaded module: /lib64/libm.so.6. 
+Loaded module: /opt/intel/composer_xe_2013_sp1.1.106/compiler/lib/intel64/libiomp5.so. 
+Loaded module: /lib64/libgcc_s.so.1. 
+Loaded module: /lib64/libpthread.so.0. 
+Loaded module: /lib64/libc.so.6. 
+Loaded module: /lib64/libdl.so.2. 
+Loaded module: /local/opt/intel/inspector_xe_2013/bin64/../lib64/runtime/libittnotify.so. 
+Warning: One or more threads in the application accessed the stack of another thread. This may indicate one or more bugs in your application. Setting the Inspector to detect data races on stack accesses and running another analysis may help you locate these and other bugs.
+Unloaded module: /local/pcs_ua/pcs13_19/Labs/Lab2/MolDyn/md. 
+Unloaded module: /lib64/ld-linux-x86-64.so.2. 
+Unloaded module: /lib64/libm.so.6. 
+Unloaded module: /opt/intel/composer_xe_2013_sp1.1.106/compiler/lib/intel64/libiomp5.so. 
+Unloaded module: /lib64/libgcc_s.so.1. 
+Unloaded module: /lib64/libpthread.so.0. 
+Unloaded module: /lib64/libc.so.6. 
+Unloaded module: /lib64/libdl.so.2. 
+Unloaded module: /local/opt/intel/inspector_xe_2013/bin64/../lib64/runtime/libittnotify.so. 
+Process /local/pcs_ua/pcs13_19/Labs/Lab2/MolDyn/md (PID = 4407) has terminated. 
+Application exit code: 0 
+Result file: /local/pcs_ua/pcs13_19/Labs/Lab2/MolDyn/r004ti3/r004ti3.inspxe 
+Analysis completed
+=== End: [2014/01/26 17:54:15] === 

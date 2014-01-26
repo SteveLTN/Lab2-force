@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log version="1.0" tool="runtool">
+
+<msg id="1" tool="runtool">
+  <type>log-start</type>
+  <arg>2014/01/26 17:53:35</arg>
+</msg>
+<msg id="2" tool="runtool">
+  <type>collector-starts</type>
+</msg>
+<msg id="3" tool="runtool">
+  <type>marker-file</type>
+  <arg>/local/pcs_ua/pcs13_19/Labs/Lab2/MolDyn/r004ti3/r004ti3.inspxe</arg>
+</msg>
+<msg id="4" tool="tc">
+  <type>START</type>
+  <severity>INFO</severity>
+  <timestamp>Sun Jan 26 17:53:35 2014</timestamp>
+</msg>
+<msg id="5" tool="tc">
+  <type>EXEC_OF_INTEREST</type>
+  <arg>/local/pcs_ua/pcs13_19/Labs/Lab2/MolDyn/md</arg>
+  <arg>4407</arg>
+  <severity>INFO</severity>
+  <timestamp>Sun Jan 26 17:53:35 2014</timestamp>
+</msg>
+<msg id="6" tool="tc">
+  <type>LOAD_MODULE</type>
+  <arg>/local/pcs_ua/pcs13_19/Labs/Lab2/MolDyn/md</arg>
+  <arg>0x400000</arg>
+  <arg>0x609847</arg>
+  <severity>INFO</severity>
+  <timestamp>Sun Jan 26 17:53:35 2014</timestamp>
+</msg>
+<msg id="7" tool="tc">
+  <type>LOAD_MODULE</type>
+  <arg>/lib64/ld-linux-x86-64.so.2</arg>
+  <arg>0x35b2800000</arg>
+  <arg>0x35b2a21187</arg>
+  <severity>INFO</severity>
+  <timestamp>Sun Jan 26 17:53:35 2014</timestamp>
+</msg>
+<msg id="8" tool="tc">
+  <type>LOAD_MODULE</type>
+  <arg>/lib64/libm.so.6</arg>
+  <arg>0x35b3400000</arg>
+  <arg>0x35b36830b7</arg>
+  <severity>INFO</severity>
+  <timestamp>Sun Jan 26 17:53:35 2014</timestamp>
+</msg>
+<msg id="9" tool="tc">
+  <type>LOAD_MODULE</type>
+  <arg>/opt/intel/composer_xe_2013_sp1.1.106/compiler/lib/intel64/libiomp5.so</arg>
+  <arg>0x7fa94271d000</arg>
+  <arg>0x7fa942a37b5f</arg>
+  <severity>INFO</severity>
+  <timestamp>Sun Jan 26 17:53:35 2014</timestamp>
+</msg>
+<msg id="10" tool="tc">
+  <type>LOAD_MODULE</type>
+  <arg>/lib64/libgcc_s.so.1</arg>
+  <arg>0x35bcc00000</arg>
+  <arg>0x35bce15d57</arg>
+  <severity>INFO</severity>
+  <timestamp>Sun Jan 26 17:53:35 2014</timestamp>
+</msg>
+<msg id="11" tool="tc">
+  <type>LOAD_MODULE</type>
+  <arg>/lib64/libpthread.so.0</arg>
+  <arg>0x35b3800000</arg>
+  <arg>0x35b3a1c3ef</arg>
+  <severity>INFO</severity>
+  <timestamp>Sun Jan 26 17:53:35 2014</timestamp>
+</msg>
+<msg id="12" tool="tc">
+  <type>LOAD_MODULE</type>
+  <arg>/lib64/libc.so.6</arg>
+  <arg>0x35b2c00000</arg>
+  <arg>0x35b2f93907</arg>
+  <severity>INFO</severity>
+  <timestamp>Sun Jan 26 17:53:35 2014</timestamp>
+</msg>
+<msg id="13" tool="tc">
+  <type>LOAD_MODULE</type>
+  <arg>/lib64/libdl.so.2</arg>
+  <arg>0x35b3000000</arg>
+  <arg>0x35b32030ff</arg>
+  <severity>INFO</severity>
+  <timestamp>Sun Jan 26 17:53:35 2014</timestamp>
+</msg>
+<msg id="14" tool="tc">
+  <type>LOAD_MODULE</type>
+  <arg>/local/opt/intel/inspector_xe_2013/bin64/../lib64/runtime/libittnotify.so</arg>
+  <arg>0x7fa941dd8000</arg>
+  <arg>0x7fa941ee17bf</arg>
+  <severity>INFO</severity>
+  <timestamp>Sun Jan 26 17:53:36 2014</timestamp>
+</msg>
+<msg id="15" tool="tc">
+  <type>CTSA_NO_STACK</type>
+  <severity>WARNING</severity>
+  <timestamp>Sun Jan 26 17:53:40 2014</timestamp>
+</msg>
+<msg id="16" tool="tc">
+  <type>UNLOAD_MODULE</type>
+  <arg>/local/pcs_ua/pcs13_19/Labs/Lab2/MolDyn/md</arg>
+  <severity>INFO</severity>
+  <timestamp>Sun Jan 26 17:54:11 2014</timestamp>
+</msg>
+<msg id="17" tool="tc">
+  <type>UNLOAD_MODULE</type>
+  <arg>/lib64/ld-linux-x86-64.so.2</arg>
+  <severity>INFO</severity>
+  <timestamp>Sun Jan 26 17:54:11 2014</timestamp>
+</msg>
+<msg id="18" tool="tc">
+  <type>UNLOAD_MODULE</type>
+  <arg>/lib64/libm.so.6</arg>
+  <severity>INFO</severity>
+  <timestamp>Sun Jan 26 17:54:11 2014</timestamp>
+</msg>
+<msg id="19" tool="tc">
+  <type>UNLOAD_MODULE</type>
+  <arg>/opt/intel/composer_xe_2013_sp1.1.106/compiler/lib/intel64/libiomp5.so</arg>
+  <severity>INFO</severity>
+  <timestamp>Sun Jan 26 17:54:11 2014</timestamp>
+</msg>
+<msg id="20" tool="tc">
+  <type>UNLOAD_MODULE</type>
+  <arg>/lib64/libgcc_s.so.1</arg>
+  <severity>INFO</severity>
+  <timestamp>Sun Jan 26 17:54:11 2014</timestamp>
+</msg>
+<msg id="21" tool="tc">
+  <type>UNLOAD_MODULE</type>
+  <arg>/lib64/libpthread.so.0</arg>
+  <severity>INFO</severity>
+  <timestamp>Sun Jan 26 17:54:11 2014</timestamp>
+</msg>
+<msg id="22" tool="tc">
+  <type>UNLOAD_MODULE</type>
+  <arg>/lib64/libc.so.6</arg>
+  <severity>INFO</severity>
+  <timestamp>Sun Jan 26 17:54:11 2014</timestamp>
+</msg>
+<msg id="23" tool="tc">
+  <type>UNLOAD_MODULE</type>
+  <arg>/lib64/libdl.so.2</arg>
+  <severity>INFO</severity>
+  <timestamp>Sun Jan 26 17:54:11 2014</timestamp>
+</msg>
+<msg id="24" tool="tc">
+  <type>UNLOAD_MODULE</type>
+  <arg>/local/opt/intel/inspector_xe_2013/bin64/../lib64/runtime/libittnotify.so</arg>
+  <severity>INFO</severity>
+  <timestamp>Sun Jan 26 17:54:11 2014</timestamp>
+</msg>
+<msg id="25" tool="tc">
+  <type>PROCESS_TERMINATE</type>
+  <arg>/local/pcs_ua/pcs13_19/Labs/Lab2/MolDyn/md</arg>
+  <arg>4407</arg>
+  <severity>INFO</severity>
+  <timestamp>Sun Jan 26 17:54:11 2014</timestamp>
+</msg>
+<msg id="26" tool="tc">
+  <type>ANALYSIS_COMPLETE</type>
+  <severity>INFO</severity>
+  <timestamp>Sun Jan 26 17:54:11 2014</timestamp>
+</msg>
+<msg id="27" tool="tc">
+  <type>STOP</type>
+  <severity>INFO</severity>
+  <timestamp>Sun Jan 26 17:54:11 2014</timestamp>
+</msg>
+<msg id="28" tool="runtool">
+  <type>app-exit-code</type>
+  <arg>0</arg>
+</msg>
+<msg id="29" tool="runtool">
+  <type>marker-file</type>
+  <arg>/local/pcs_ua/pcs13_19/Labs/Lab2/MolDyn/r004ti3/r004ti3.inspxe</arg>
+</msg>
+<msg id="30" tool="runtool">
+  <type>collector-done</type>
+</msg>
+<msg id="31" tool="runtool">
+  <type>log-end</type>
+  <arg>2014/01/26 17:54:15</arg>
+</msg>
+
+</log>
+
