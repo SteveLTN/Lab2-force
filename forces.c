@@ -3,29 +3,17 @@ extern double ** f_accumulation;
 
 void forces(int npart, double x[], double f[], double side, double rcoff) {
   int   i, j;
-  printf("num_threads: %d\n", omp_get_num_threads());
   #pragma omp single
   {
     vir    = 0.0;
     epot   = 0.0;
-    f_accumulation = (double **) malloc(omp_get_num_threads() * sizeof(double *));
   }
 
   #pragma omp for private(i, j) reduction(+:vir, epot) schedule(dynamic, 10)
   for (i=0; i<npart*3; i+=3) {
 
     int thread_num = omp_get_thread_num();
-    int num_threads = omp_get_num_threads();
     int length = npart * 3;
-
-    printf("Thread num: %d\n", thread_num);
-    printf("f_accumulation address %d\n", f_accumulation);
-    f_accumulation[thread_num] = (double *) malloc(length * sizeof(double));
-    for(j=0; j<length; j++){
-      printf("j = %d", j);
-      f_accumulation[thread_num][j] = 0;
-    }
-    double * f_local = f_accumulation[thread_num];
 
     double fxi = 0.0;
     double fyi = 0.0;
@@ -59,19 +47,52 @@ void forces(int npart, double x[], double f[], double side, double rcoff) {
         fyi     += yy*r148;
         fzi     += zz*r148;
 
-        f_local[j] += xx * r148;
-        f_local[j + 1] += yy * r148;
-        f_local[j + 2] += zz * r148;
+        // #pragma omp atomic
+        //   f[j]    -= xx*r148;
+        //   #pragma omp atomic
+        //   f[j+1]  -= yy*r148;
+        //   #pragma omp atomic
+        //   f[j+2]  -= zz*r148;
+
+        f_accumulation[thread_num][j]    -= xx*r148;
+        f_accumulation[thread_num][j+1]  -= yy*r148;
+        f_accumulation[thread_num][j+2]  -= zz*r148;
       }
     }
 
-    f_local[i]     += fxi;
-    f_local[i + 1]   += fyi;
-    f_local[i + 2]   += fzi;
+    #pragma omp atomic
+    f[i] += fxi;
+    #pragma omp atomic
+    f[i+1]   += fyi;
+    #pragma omp atomic
+    f[i+2]   += fzi;
+    // f_accumulation[thread_num][i] += fxi;
+    // f_accumulation[thread_num][i+1]   += fyi;
+    // f_accumulation[thread_num][i+2]   += fzi;
+
   } // end of for loop
 
+  #pragma omp for private(i) schedule(dynamic, 64)
+  for (i=0; i<npart*3; i++) {
+    double temp_value = 0;
+    int thread_id;
+    for(thread_id = 0; thread_id < omp_get_num_threads(); thread_id++) {
+      temp_value += f_accumulation[thread_id][i];
+    }
 
-  for(i = 0; i < npart * 3; i++)
-    for(j = 0; j < omp_get_num_threads(); j++)
-      f[i] += f_accumulation[j][i];
+    f[i] += temp_value;
+  }
+
+  // #pragma omp single 
+  // {
+  //   int d;
+  //   for(d=0; d < omp_get_num_threads(); d++) {
+  //     int m;
+  //     for(m = 0; m < npart * 3; m++) {
+  //       if(f_accumulation[d][m] != 0) {
+  //         f[m] += f_accumulation[d][m];
+  //       }
+  //     }
+  //   }
+  // }
 }
