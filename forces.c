@@ -9,7 +9,7 @@ void forces(int npart, double x[], double f[], double side, double rcoff) {
     epot   = 0.0;
   }
 
-  #pragma omp for private(i, j) reduction(+:vir, epot) schedule(dynamic, 10)
+  #pragma omp for private(j) reduction(+:vir) reduction(+:epot) schedule(dynamic, 10)
   for (i=0; i<npart*3; i+=3) {
 
     int thread_num = omp_get_thread_num();
@@ -48,11 +48,11 @@ void forces(int npart, double x[], double f[], double side, double rcoff) {
         fzi     += zz*r148;
 
         // #pragma omp atomic
-        //   f[j]    -= xx*r148;
-        //   #pragma omp atomic
-        //   f[j+1]  -= yy*r148;
-        //   #pragma omp atomic
-        //   f[j+2]  -= zz*r148;
+        // f[j]    -= xx*r148;
+        // #pragma omp atomic
+        // f[j+1]  -= yy*r148;
+        // #pragma omp atomic
+        // f[j+2]  -= zz*r148;
 
         f_accumulation[thread_num][j]    -= xx*r148;
         f_accumulation[thread_num][j+1]  -= yy*r148;
@@ -60,39 +60,31 @@ void forces(int npart, double x[], double f[], double side, double rcoff) {
       }
     }
 
-    #pragma omp atomic
-    f[i] += fxi;
-    #pragma omp atomic
-    f[i+1]   += fyi;
-    #pragma omp atomic
-    f[i+2]   += fzi;
-    // f_accumulation[thread_num][i] += fxi;
-    // f_accumulation[thread_num][i+1]   += fyi;
-    // f_accumulation[thread_num][i+2]   += fzi;
+    // #pragma omp atomic
+    // f[i] += fxi;
+    // #pragma omp atomic
+    // f[i+1]   += fyi;
+    // #pragma omp atomic
+    // f[i+2]   += fzi;
 
+    f_accumulation[thread_num][i]     += fxi;
+    f_accumulation[thread_num][i+1]   += fyi;
+    f_accumulation[thread_num][i+2]   += fzi;
   } // end of for loop
+  #pragma omp flush
+  printf("right after loop     : f[1394] = %5.20f, f_accumulation[0][1394] = %5.20f\n", f[1394], f_accumulation[0][1394]);
 
-  #pragma omp for private(i) schedule(dynamic, 64)
+  // #pragma omp for private(i) schedule(dynamic, 128)
   for (i=0; i<npart*3; i++) {
     double temp_value = 0;
     int thread_id;
     for(thread_id = 0; thread_id < omp_get_num_threads(); thread_id++) {
       temp_value += f_accumulation[thread_id][i];
     }
-
-    f[i] += temp_value;
+    if(i == 1394){
+      printf("in forces            : f[1394] = %5.20f, f_accumulation[0][1394] = %5.20f\n", f[1394], f_accumulation[0][1394]);
+    }
+    // f[i] += temp_value;
   }
 
-  // #pragma omp single 
-  // {
-  //   int d;
-  //   for(d=0; d < omp_get_num_threads(); d++) {
-  //     int m;
-  //     for(m = 0; m < npart * 3; m++) {
-  //       if(f_accumulation[d][m] != 0) {
-  //         f[m] += f_accumulation[d][m];
-  //       }
-  //     }
-  //   }
-  // }
 }
