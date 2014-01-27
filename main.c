@@ -123,63 +123,43 @@ int main(){
            "   pres      vel      rp\n  -----  ----------  ----------"
            "  ----------  --------  --------  --------  ----\n");
 
-     start = secnds();
+    start = secnds();
 
-    #pragma omp parallel private(move) num_threads(2)
+    #pragma omp parallel private(move) num_threads(1)
      {
       #pragma omp single
       {
         int num_threads = omp_get_num_threads();
-
         f_accumulation= (double**)malloc(num_threads * sizeof(double *));
         int i;
-        for (i = 0; i < num_threads; i++) {
+        for (i = 0; i < num_threads; i++)
           f_accumulation[i] = (double*)malloc((npart * 3) * sizeof(double));
-          //memset(f_accumulation[i], 0.0f, (npart * 3));
-        }
       }
       for (move=1; move<=movemx; move++) {
-
-      /*
-       *  Move the particles and partially update velocities
-       */
-        #pragma omp single 
+        #pragma omp single
         {
           domove(3*npart, x, vh, f, side);
-
           int g;
           for (g = 0; g < omp_get_num_threads(); g++) {
             memset(f_accumulation[g], 0.0f, (npart * 3));
           }
         }
+        int ii;
+        printf("before forces in main: f[1394] = %5.20f, f_accumulation[0][1394] = %5.20f\n", f[1394], f_accumulation[0][1394]);
 
-      /*
-       *  Compute forces in the new positions and accumulate the virial
-       *  and potential energy.
-       */
         forces(npart, x, f, side, rcoff);
+
+        printf("after forces in main : f[1394] = %5.20f, f_accumulation[0][1394] = %5.20f\n--------------------------------------------------\n", f[1394], f_accumulation[0][1394]);
 
         #pragma omp single
         {
-          /*
-           *  Scale forces, complete update of velocities and compute k.e.
-           */
           ekin=mkekin(npart, f, vh, hsq2, hsq);
-
-          /*
-           *  Average the velocity and temperature scale if desired
-           */
           vel=velavg(npart, vh, vaver, h);
           if (move<istop && fmod(move, irep)==0) {
             sc=sqrt(tref/(tscale*ekin));
             dscal(3*npart, sc, vh, 1);
             ekin=tref/tscale;
           }
-
-          /*
-           *  Sum to get full potential energy and virial
-           */
-
           if (fmod(move, iprint)==0)
             prnout(move, ekin, epot, tscale, vir, vel, count, npart, den);
         }
