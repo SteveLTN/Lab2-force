@@ -2,12 +2,15 @@ extern double epot, vir;
 extern double ** f_accumulation;
 
 void forces(int npart, double x[], double f[], double side, double rcoff) {
-  int   i, j;
+  int   i, j, abc;
   #pragma omp single
   {
     vir    = 0.0;
     epot   = 0.0;
   }
+
+  for(abc = 0; abc<npart*3; abc++) 
+            f_accumulation[omp_get_thread_num()][abc] = 0;
 
   #pragma omp for private(j) reduction(+:vir) reduction(+:epot) schedule(dynamic, 10)
   for (i=0; i<npart*3; i+=3) {
@@ -71,20 +74,28 @@ void forces(int npart, double x[], double f[], double side, double rcoff) {
     f_accumulation[thread_num][i+1]   += fyi;
     f_accumulation[thread_num][i+2]   += fzi;
   } // end of for loop
-  #pragma omp flush
-  printf("right after loop     : f[1394] = %5.20f, f_accumulation[0][1394] = %5.20f\n", f[1394], f_accumulation[0][1394]);
+  // #pragma omp flush
+  // printf("right after loop     : f[1394] = %5.20f, f_accumulation[0][1394] = %5.20f\n", f[1394], f_accumulation[0][1394]);
 
-  // #pragma omp for private(i) schedule(dynamic, 128)
+  // #pragma omp for private(j)
+  // for(i=0; i<npart*3; i++) {
+  //   for(j=0; j < omp_get_num_threads(); j++) {
+  //     f[i] += f_accumulation[j][i];
+  //     f_accumulation[j][i] = 0;
+  //    }
+  // }
+
+  #pragma omp for private(i) schedule(dynamic, 10)
   for (i=0; i<npart*3; i++) {
     double temp_value = 0;
     int thread_id;
     for(thread_id = 0; thread_id < omp_get_num_threads(); thread_id++) {
       temp_value += f_accumulation[thread_id][i];
     }
-    if(i == 1394){
-      printf("in forces            : f[1394] = %5.20f, f_accumulation[0][1394] = %5.20f\n", f[1394], f_accumulation[0][1394]);
-    }
-    // f[i] += temp_value;
+    // if(i == 1394){
+      // printf("in forces            : f[1394] = %5.20f, f_accumulation[0][1394] = %5.20f\n", f[1394], f_accumulation[0][1394]);
+    // }
+    f[i] += temp_value;
   }
 
 }
